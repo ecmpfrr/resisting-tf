@@ -11,7 +11,7 @@
 # S1-128 - Necos-Trex-T1
 # S2-129 - Necos-Trex-T2
 # S1-136 - H1
-# S2-131 - 2
+# S2-131 - H2
 
 
 from ipaddress import ip_address
