@@ -1,5 +1,5 @@
 #
-# REGAS PARA TESTAR TRAFICO DO NECOS P0(S1-128(1/0)) para o NECOS P1(S2-129(1/1))
+# REGRAS PARA TESTAR TRAFICO DO NECOS P0(S1-128(1/0)) para o NECOS P1(S2-129(1/1))
 # Loop 196 pipe 1
 # Uplinks
 # S1-25(20/1) - S2-41(22/1)
@@ -112,8 +112,7 @@ rg_port_out = p4.Ingress.rg_port_out
 rg_port_out.clear()
 rg_port_out.add(0,25)
 
-#Registro Default path, pacotes com destino a porta 255 sao encaminhandos para a porta
-# deste registro
+#Registro Default path, pacotes com destino a porta 255 sao encaminhandos para a porta do Default path register
 rg_default_path = p4.Ingress.rg_default_path
 
 rg_default_path.dump(table=True,from_hw=1)
@@ -124,7 +123,7 @@ rg_default_path.add(0,25)
 #A tabela update_port executa o registro rg_port_out_wr para atualizar o index com a
 # nova porta. A porta é recebida do campo hdr.frr.idx_port_down do header FRR
 #update_port_out = p4.Ingress.update_port_out
-#Se for estiver em loop (bit=1), atualiza a porta na posicao do idx
+#Se estiver em loop (bit=1), então atualiza a porta na posicao do idx
 
 update_port_out_5 = p4.Ingress.update_port_out_5
 update_port_out_5.dump(table=True,from_hw=1)
@@ -172,7 +171,7 @@ update_port_out_1.add_with_set_add_port_out_1(0,1)
 #A tabela update_port executa o registro rg_port_out_wr para atualizar o index com a
 # nova porta. A porta é recebida do campo hdr.frr.idx_port_down do header FRR
 update_port_out = p4.Ingress.update_port_out
-#Se for estiver em loop (bit=1), atualiza a porta na posicao do idx
+#Se estiver em loop (bit=1), então atualiza a porta na posicao do idx
 update_port_out.dump(table=True,from_hw=1)
 update_port_out.clear()
 update_port_out.add_with_set_add_port_out(0,1)
@@ -180,7 +179,7 @@ update_port_out.add_with_set_add_port_out(0,1)
 # A tabela update_default_path executa o registro rg_default_path_wr e atualiza o
 #index da porta default (igual a tabela update_port)
 update_default_path = p4.Ingress.update_default_path
-#Se for estiver em loop (bit=1), atualiza o default_path com a mesma porta do idx 0
+#Se estiver em loop (bit=1), então atualiza o default_path com a mesma porta do idx 0
 update_default_path.dump(table=True,from_hw=1)
 update_default_path.clear()
 #update_default_path.add_with_set_add_default_path(0,1)
@@ -291,7 +290,7 @@ frr_recirculation = p4.Ingress.frr_recirculation
 #            hdr.ethernet.ether_type: exact;
 #    }
 
-# Cada regra usa um idx no direct-register
+# Obs: cada regra usa um automatico idx no direct-register
 frr_recirculation.dump(table=True,from_hw=1)
 frr_recirculation.clear()
 frr_recirculation.add_with_set_frr_recirculation_first_failure_port_pipe_1(1,128,196)
@@ -306,8 +305,8 @@ frr_no_recovery.add_with_set_frr_no_recovery(0,0,0x255)
 frr_no_recovery.add_with_set_frr_no_recovery(0,0,0x800)
 frr_no_recovery.dump(table=True,from_hw=1)
 
-#Os Registro frr_port_out são resposaveis pela exclusao da porta down, reordenacao das portas
-#remanescentes ativas e atualizacao do regestro port_out (ingress) via header FRR/recirculacao
+#Os registros frr_port_out são resposaveis pela exclusao da porta down, reordenacao das portas
+#remanescentes ativas e atualizacao do registro port_out (ingress) via header FRR/recirculacao
 #
 #
 rg_frr_port_out_5 = p4.Egress.rg_frr_port_out_5
@@ -346,7 +345,7 @@ rg_frr_port_out_0.add(0,25)
 # Ingress
 # Idx[2]= 3 down
 # Egress
-# frr_port_out_3: adiciona porta 255 e copia porta 4 para ser adicionada no frr_port_out_2
+# frr_port_out_3: adiciona porta 255 e copia porta 4 para o frr_port_out_2
 # frr_port_out_2: exclui a porta 2 substituindo pela porta recebida do frr_port_out_3
 #
 frr_port_out_5 = p4.Egress.frr_port_out_5
