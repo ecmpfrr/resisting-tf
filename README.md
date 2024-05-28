@@ -1,6 +1,6 @@
 # P4-RESISTING-tofino
 
-The RESISTING is a new FRR-ECMP mechanism for P4 programmable switches, this repository contains the P4 implementation for Switch Tofino and running scripts.
+The RESISTING is a new FRR-ECMP mechanism for P4 programmable switches. This repository contains the P4 implementation for the Tofino switch and running scripts.
 
 
 ### Network Topology 
